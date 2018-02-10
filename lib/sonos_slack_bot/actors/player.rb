@@ -27,10 +27,6 @@ module SonosSlackBot::Actors
       every 4 do
         speaker_result = Actor[:sonos].future.now_playing.value
 
-        p speaker_result
-        p @speaker
-        p speaker_result == @speaker
-
         # Do we have a new speaker state?
         unless speaker_result == @speaker
           self.speaker = speaker_result

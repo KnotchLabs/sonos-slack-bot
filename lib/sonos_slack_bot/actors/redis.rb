@@ -30,8 +30,6 @@ module SonosSlackBot::Actors
 
     def last_track
       Track.parse @connection.lindex(tracks_redis_key, 0)
-
-      @connection.set history_redis_key
     end
 
     def track_history(track)

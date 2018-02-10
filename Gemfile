@@ -12,3 +12,7 @@ group :development, :test do
   gem 'guard'
   gem 'guard-rspec'
 end
+
+group :deploy do
+  gem 'net-ssh'
+end

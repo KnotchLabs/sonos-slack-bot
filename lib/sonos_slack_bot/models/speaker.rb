@@ -3,7 +3,7 @@ module SonosSlackBot::Models
     include Jsonable
     include Comparable
 
-    model_attr :track
+    model_attr :connected, :track
 
     def initialize(connected: true, track: nil)
       @connected = connected
