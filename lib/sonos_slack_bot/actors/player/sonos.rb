@@ -36,7 +36,7 @@ module SonosSlackBot::Actors
 
     # This is some really hacky stuff
     def self.request_speaker
-      ip = SonosSlackBot.config.sonos_addr
+      ip = SonosSlackBot.config.sonos.address
 
       Sonos::Device::Speaker.new(ip).tap do |speaker|
         speaker.define_singleton_method(:group_master) { OpenStruct.new(ip: ip) }

@@ -1,7 +1,3 @@
-%w[BOT_ENV SLACK_API_TOKEN SONOS_ADDR REDIS_URL].each do |key|
-  abort "#{key} environment variable must be defined" unless ENV.key? key
-end
-
 require 'digest'
 
 require 'active_support'
@@ -15,6 +11,7 @@ require 'slack-ruby-client'
 require 'sonos'
 
 require 'sonos_slack_bot/version'
+require 'sonos_slack_bot/configuration'
 require 'sonos_slack_bot/redis_keys'
 
 require 'sonos_slack_bot/formatters/topic'
@@ -33,20 +30,20 @@ require 'sonos_slack_bot/actors/slack'
 
 #$CELLULOID_DEBUG = true
 
-Slack.configure do |config|
-  config.token = ENV.fetch('SLACK_API_TOKEN')
-end
-
-Slack::RealTime.configure do |config|
-  config.concurrency = Slack::RealTime::Concurrency::Celluloid
-end
-
 module SonosSlackBot
   Lock = Mutex.new
 
   def self.start!
     Lock.synchronize do
       @running = true
+
+      Slack.configure do |slack_conf|
+        slack_conf.token = config[:slack][:token]
+      end
+
+      Slack::RealTime.configure do |config|
+        config.concurrency = Slack::RealTime::Concurrency::Celluloid
+      end
 
       Celluloid.logger.level = 0
       Celluloid.boot
@@ -69,10 +66,6 @@ module SonosSlackBot
   end
 
   def self.config
-    @config ||= OpenStruct.new({
-      admins: %w[U85DPN02D],
-      channel: '#sonos',
-      sonos_addr: ENV['SONOS_ADDR']
-    })
+    @config ||= Configuration.load(File.join(Dir.pwd, 'config.yml'))
   end
 end

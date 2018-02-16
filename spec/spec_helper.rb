@@ -18,7 +18,7 @@ RSpec.configure do |config|
 
   config.include Module.new do
     def redis
-      Redis.new url: ENV['REDIS_URL']
+      Redis.new url: 'redis://localhost:6379'
     end
   end
 end

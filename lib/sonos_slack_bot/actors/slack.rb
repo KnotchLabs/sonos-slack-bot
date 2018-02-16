@@ -25,6 +25,14 @@ module SonosSlackBot::Actors
 
     private
 
+    def client_id_prefix
+      @client_id_prefix ||= "<@#{@rt_client.self.id}> ".freeze
+    end
+
+    def client_id
+      @rt_client.self.id
+    end
+
     def start_client
       @rt_client.start_async
     end
