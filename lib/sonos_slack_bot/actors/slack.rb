@@ -19,8 +19,19 @@ module SonosSlackBot::Actors
 
     def set_topic(topic)
       @web_client.channels_setTopic(
-        channel: SonosSlackBot.config.channel, topic: topic.to_s
+        channel: SonosSlackBot.config.slack.channel_name, topic: topic.to_s
       )
+    end
+
+    def send_message(text, as_user: true)
+      @web_client.chat_postMessage(
+        channel: SonosSlackBot.config.slack.channel_name, text: text, as_user: as_user
+      )
+    end
+
+    # TODO cache the users_info results
+    def get_user_info(user_id)
+      @web_client.users_info(user: user_id)
     end
 
     private
@@ -38,12 +49,23 @@ module SonosSlackBot::Actors
     end
 
     def setup_callbacks
-      %i[hello message].each do |event|
-        @rt_client.on(event) do |event|
-          Actor[:message_pool].async.process event
+      @rt_client.on :message do |event|
+        user_id = event.user
+
+        next if user_id == client_id
+
+        message = { at: false, im: false, user_id: user_id, text: event.text }
+
+        # TODO figure out how to detect an IM
+        if message[:text].starts_with? client_id_prefix
+          message[:at] = true
+          message[:text].slice! 0..(client_id_prefix.size - 1)
         end
+
+        Actor[:slack_message_pool].async.process message
       end
 
+      @rt_client.on(:hello) { Celluloid.logger.info "Connected real-time slack client; client_id=#{client_id}" }
       @rt_client.on(:close) { Celluloid.logger.info 'Disconnecting real-time slack client' }
       @rt_client.on(:closed) { Celluloid.logger.info 'Disconnected real-time slack client' }
     end

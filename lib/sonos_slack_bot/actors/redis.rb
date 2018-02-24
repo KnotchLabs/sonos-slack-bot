@@ -11,7 +11,7 @@ module SonosSlackBot::Actors
     # - list with dynamic history key for date times played
 
     def initialize
-      @connection = ::Redis.new(driver: :celluloid)
+      @connection = ::Redis.new(url: SonosSlackBot.config.redis.url, driver: :celluloid)
     end
 
     def speaker_state=(speaker)
@@ -24,12 +24,16 @@ module SonosSlackBot::Actors
 
     def add_track(track)
       @connection.set track_redis_key(track), track.to_json
-      @connection.lpush tracks_redis_key, track.id
       @connection.lpush history_redis_key(track), Time.now.to_i
+      @connection.lpush tracks_redis_key, track.id
     end
 
     def last_track
-      Track.parse @connection.lindex(tracks_redis_key, 0)
+      track_id = @connection.lindex(tracks_redis_key, 0)
+      return unless track_id
+
+      track_data = @connection.get(track_redis_key(track_id))
+      Track.parse track_data if track_data
     end
 
     def track_history(track)

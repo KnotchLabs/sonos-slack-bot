@@ -13,20 +13,27 @@ require 'sonos'
 require 'sonos_slack_bot/version'
 require 'sonos_slack_bot/configuration'
 require 'sonos_slack_bot/redis_keys'
+require 'sonos_slack_bot/actor_helpers'
 
-require 'sonos_slack_bot/formatters/topic'
-require 'sonos_slack_bot/formatters/track'
+require 'sonos_slack_bot/formatters/topic_formatter'
+require 'sonos_slack_bot/formatters/track_formatter'
+require 'sonos_slack_bot/formatters/track_stats_formatter'
 
 require 'sonos_slack_bot/models'
 require 'sonos_slack_bot/models/track'
 require 'sonos_slack_bot/models/speaker'
 
 require 'sonos_slack_bot/actors/bot'
-require 'sonos_slack_bot/actors/message'
 require 'sonos_slack_bot/actors/player'
 require 'sonos_slack_bot/actors/player/sonos'
+require 'sonos_slack_bot/actors/player/speaker_event'
 require 'sonos_slack_bot/actors/redis'
 require 'sonos_slack_bot/actors/slack'
+require 'sonos_slack_bot/actors/slack_message'
+require 'sonos_slack_bot/actors/slack_message/base'
+require 'sonos_slack_bot/actors/slack_message/greeting'
+require 'sonos_slack_bot/actors/slack_message/history'
+require 'sonos_slack_bot/actors/slack_message/unknown'
 
 #$CELLULOID_DEBUG = true
 

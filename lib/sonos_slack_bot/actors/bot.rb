@@ -4,8 +4,8 @@ module SonosSlackBot::Actors
       super(*args) do |actor|
         Actor[:bot] = actor
 
-        pool Message, as: :message_pool, size: 4
         pool Redis, as: :redis_pool, size: 4
+        pool SlackMessage, as: :slack_message_pool, size: 4
 
         supervise type: Slack, as: :slack
         supervise type: Player, as: :player

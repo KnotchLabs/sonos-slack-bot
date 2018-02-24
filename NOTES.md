@@ -46,3 +46,11 @@ speaker.has_music?
 :unsubscribe_from_upnp_events, :update_alarm, :voiceover!, :volume,
 :volume=, :with_isolated_state, :zone_type]
 ```
+
+### Slack messages
+
+```
+#<Slack::Messages::Message channel="G97DH8V40" source_team="T613NF708"
+team="T613NF708" text="<@U8K1XKBDY> hi" ts="1518489953.000251"
+type="message" user="U62K89GSK">
+```
