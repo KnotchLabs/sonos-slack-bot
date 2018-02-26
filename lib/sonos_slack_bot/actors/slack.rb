@@ -57,7 +57,7 @@ module SonosSlackBot::Actors
         message = { at: false, im: false, user_id: user_id, text: event.text }
 
         # TODO figure out how to detect an IM
-        if message[:text].starts_with? client_id_prefix
+        if message[:text].start_with? client_id_prefix
           message[:at] = true
           message[:text].slice! 0..(client_id_prefix.size - 1)
         end
