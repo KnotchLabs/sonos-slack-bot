@@ -28,9 +28,5 @@ task :deploy, [:host, :user] do |_, args|
     log 'Setting up gems' do
       ssh.exec! 'bundle install --path vendor/bundle --without test development deploy'
     end
-
-    log 'Settings up envrc' do
-      ssh.exec! "cd sonos_slack_bot/ && printf #{File.read('.envrc').inspect} > .envrc"
-    end
   end
 end
