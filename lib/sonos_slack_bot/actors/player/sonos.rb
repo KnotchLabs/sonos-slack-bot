@@ -36,8 +36,6 @@ module SonosSlackBot::Actors
 
     # This is some really hacky stuff
     def self.request_speaker
-      return if SonosSlackBot.config.sonos.mock
-
       ip = SonosSlackBot.config.sonos.address
 
       Sonos::Device::Speaker.new(ip).tap do |speaker|

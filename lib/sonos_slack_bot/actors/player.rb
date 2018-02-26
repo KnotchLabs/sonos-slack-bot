@@ -29,11 +29,7 @@ module SonosSlackBot::Actors
 
     def setup_poll_sonos!
       every 4 do
-        #speaker_result = sonos_actor.future.now_playing.value
-        speaker_result = SonosSlackBot::Models::Speaker.new(
-          #track: SonosSlackBot::Models::Track
-          connected: true
-        )
+        speaker_result = sonos_actor.future.now_playing.value
 
         # Do we have a new speaker state?
         unless speaker_result == @speaker
