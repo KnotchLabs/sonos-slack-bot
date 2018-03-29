@@ -2,13 +2,16 @@ module SonosSlackBot::Formatters
   class StatsFormatter
     include Helpers
 
-    def initialize(count, top_5)
-      @count = count
+    def initialize(total_count, tracks_count, top_5)
+      @total_count = total_count
+      @tracks_count = tracks_count
       @top_5 = top_5
     end
 
     def to_s
-      "There have been #{delimited_number @count} tracks played. The top 5 tracks over all are:\n#{top_5_str}"
+      "There have been #{delimited_number @count} tracks played "\
+        "a total of #{delimited_number @total_count} times. "\
+        "The top 5 tracks over all are:\n#{top_5_str}"
     end
 
     private

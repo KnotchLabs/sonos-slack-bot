@@ -28,6 +28,10 @@ module SonosSlackBot::Actors
       @connection.lpush tracks_redis_key, track.id
     end
 
+    def tracks_count
+      @connection.llen tracks_redis_key
+    end
+
     def tracks_by_count
       tracks = @connection.lrange(tracks_redis_key, 0, -1)
       tracks.each_with_object(Hash.new(0)) { |id, counts| counts[id] += 1 }.to_a.tap do |counts|
