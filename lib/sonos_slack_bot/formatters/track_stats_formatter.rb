@@ -1,5 +1,7 @@
 module SonosSlackBot::Formatters
   class TrackStatsFormatter
+    include Helpers
+
     def initialize(track, history, **options)
       @track = track
       @history = history
@@ -11,7 +13,7 @@ module SonosSlackBot::Formatters
         "This track has been played #{play_count} times and was first played "\
           "on #{first_played} :chart_with_upwards_trend:"
       else
-        "#{TrackFormatter.new(@track)} has been played #{play_count} times "\
+        "#{TrackFormatter.new @track} has been played #{play_count} times "\
           "and was first played on #{first_played}."
       end
     end
@@ -23,7 +25,7 @@ module SonosSlackBot::Formatters
     end
 
     def first_played
-      Time.at(@history.last.to_i).strftime('%B %d, %Y at %H:%M %p')
+      localize_timestamp_str @history.last
     end
   end
 end

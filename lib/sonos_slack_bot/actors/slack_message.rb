@@ -2,6 +2,10 @@ module SonosSlackBot::Actors
   class SlackMessage
     include Celluloid
 
+    def initialize
+      @message_classes = (Base.subclasses - [Unknown]).freeze
+    end
+
     def process(text:, user_id:, at: false, im: false)
       Celluloid.logger.info "[SlackMessage] at=#{at} im=#{im} text=#{text.inspect}"
 
@@ -18,12 +22,10 @@ module SonosSlackBot::Actors
 
     private
 
+    attr_reader :message_classes
+
     def message_klass(text)
-      case text
-      when /\Ahistory\z/ then History
-      when /\Ahi|\Ahey|\Ahello/ then Greeting
-      else Unknown
-      end
+      message_classes.find { |klass| klass::TEXT_PATTERN =~ text } || Unknown
     end
 
     def send_response(reply_text)

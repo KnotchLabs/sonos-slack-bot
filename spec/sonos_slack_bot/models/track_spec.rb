@@ -32,4 +32,21 @@ RSpec.describe SonosSlackBot::Models::Track do
       it { expect(subject).to_not eq(track_two) }
     end
   end
+
+  describe '::parse_details' do
+    subject { described_class.parse_details now_playing }
+
+    let(:now_playing) { now_playing_base }
+    let(:expected_details) do
+      { title: title, artist: artist, album: album }
+    end
+
+    it { expect(subject).to eq(expected_details) }
+
+    context 'with x-sonosapi data' do
+      let(:now_playing) { x_sonosapi_now_playing_base }
+
+      it { expect(subject).to eq(expected_details) }
+    end
+  end
 end

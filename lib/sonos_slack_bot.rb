@@ -15,9 +15,12 @@ require 'sonos_slack_bot/configuration'
 require 'sonos_slack_bot/redis_keys'
 require 'sonos_slack_bot/actor_helpers'
 
+require 'sonos_slack_bot/formatters'
+require 'sonos_slack_bot/formatters/empty_history_formatter'
 require 'sonos_slack_bot/formatters/topic_formatter'
 require 'sonos_slack_bot/formatters/track_formatter'
 require 'sonos_slack_bot/formatters/track_stats_formatter'
+require 'sonos_slack_bot/formatters/stats_formatter'
 
 require 'sonos_slack_bot/models'
 require 'sonos_slack_bot/models/track'
@@ -33,6 +36,7 @@ require 'sonos_slack_bot/actors/slack_message'
 require 'sonos_slack_bot/actors/slack_message/base'
 require 'sonos_slack_bot/actors/slack_message/greeting'
 require 'sonos_slack_bot/actors/slack_message/history'
+require 'sonos_slack_bot/actors/slack_message/stats'
 require 'sonos_slack_bot/actors/slack_message/unknown'
 
 #$CELLULOID_DEBUG = true

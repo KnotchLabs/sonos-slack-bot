@@ -24,11 +24,12 @@ module SonosSlackBot::Actors
       end
 
       def send_channel_track_stats
-        track_play_count = redis_pool_actor.track_play_count(track)
+        history = redis_pool_actor.future.track_history(speaker.track).value
 
-        if track_play_count % 25 #% 1
-          #slack_actor.async.send_message
-        end
+        return if history.empty?
+        return unless (history.size % 10).zero?
+
+        TrackStatsFormatter.new track, history, as_event: true
       end
     end
   end

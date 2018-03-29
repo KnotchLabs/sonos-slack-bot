@@ -14,6 +14,12 @@ module SonosSlackBot::Actors
       def process
         raise NotImplementedError
       end
+
+      private
+
+      def empty_history_message
+        EmptyHistory.new(user_info)
+      end
     end
   end
 end

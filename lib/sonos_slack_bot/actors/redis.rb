@@ -24,16 +24,28 @@ module SonosSlackBot::Actors
 
     def add_track(track)
       @connection.set track_redis_key(track), track.to_json
-      @connection.lpush history_redis_key(track), Time.now.to_i
+      @connection.lpush history_redis_key(track), Time.now.utc.to_i
       @connection.lpush tracks_redis_key, track.id
+    end
+
+    def tracks_by_count
+      tracks = @connection.lrange(tracks_redis_key, 0, -1)
+      tracks.each_with_object(Hash.new(0)) { |id, counts| counts[id] += 1 }.to_a.tap do |counts|
+        counts.sort_by!(&:last)
+        counts.reverse!
+      end
+    end
+
+    def get_track(track_id)
+      track_data = @connection.get(track_redis_key(track_id))
+      Track.parse track_data if track_data
     end
 
     def last_track
       track_id = @connection.lindex(tracks_redis_key, 0)
       return unless track_id
 
-      track_data = @connection.get(track_redis_key(track_id))
-      Track.parse track_data if track_data
+      get_track(track_id)
     end
 
     def track_history(track)
