@@ -5,7 +5,7 @@ module SonosSlackBot::Actors
 
       def process
         total_count = redis_pool_actor.future.tracks_count.value
-        return empty_history_message unless count && count > 0
+        return empty_history_message unless total_count && total_count > 0
 
         tracks = redis_pool_actor.future.tracks_by_count.value
         tracks_top_5 = tracks.first(5).map do |track_id, count|
