@@ -9,7 +9,7 @@ module SonosSlackBot::Formatters
     end
 
     def to_s
-      "There have been #{delimited_number @count} tracks played "\
+      "There have been #{delimited_number @tracks_count} tracks played "\
         "a total of #{delimited_number @total_count} times. "\
         "The top 5 tracks over all are:\n#{top_5_str}"
     end

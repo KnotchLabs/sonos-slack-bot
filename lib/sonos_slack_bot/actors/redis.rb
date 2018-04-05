@@ -16,6 +16,12 @@ module SonosSlackBot::Actors
 
     def speaker_state=(speaker)
       @connection.set speaker_redis_key, speaker.to_json
+
+      return unless speaker.playing?
+
+      @connection.set track_redis_key(speaker.track), speaker.track.to_json
+      @connection.lpush history_redis_key(speaker.track), Time.now.utc.to_i
+      @connection.lpush tracks_redis_key, speaker.track.id
     end
 
     def speaker_state
@@ -23,9 +29,6 @@ module SonosSlackBot::Actors
     end
 
     def add_track(track)
-      @connection.set track_redis_key(track), track.to_json
-      @connection.lpush history_redis_key(track), Time.now.utc.to_i
-      @connection.lpush tracks_redis_key, track.id
     end
 
     def tracks_count
