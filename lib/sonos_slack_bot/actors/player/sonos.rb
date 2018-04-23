@@ -26,7 +26,7 @@ module SonosSlackBot::Actors
         speaker.define_singleton_method(:group_master) { OpenStruct.new(ip: ip) }
       end
 
-    rescue Errno::ECONNREFUSED, Net::OpenTimeout
+    rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Net::OpenTimeout
       nil
     end
   end
