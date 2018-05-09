@@ -52,6 +52,7 @@ module SonosSlackBot::Actors
       @rt_client.on :message do |event|
         user_id = event.user
 
+        next if event.hidden
         next if user_id == client_id
 
         message = { at: false, im: false, user_id: user_id, text: event.text }
