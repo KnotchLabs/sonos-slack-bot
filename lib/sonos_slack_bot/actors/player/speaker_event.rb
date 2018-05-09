@@ -29,7 +29,7 @@ module SonosSlackBot::Actors
         return if history.empty?
         return unless (history.size % 10).zero?
 
-        TrackStatsFormatter.new track, history, as_event: true
+        TrackStatsFormatter.new speaker.track, history, as_event: true
       end
     end
   end
