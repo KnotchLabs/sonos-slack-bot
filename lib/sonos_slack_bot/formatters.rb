@@ -8,7 +8,7 @@ module SonosSlackBot
       end
 
       def localize_timestamp_str(ts)
-        localize_timestamp(ts).strftime('%B %d, %Y at %H:%M %p')
+        localize_timestamp(ts).strftime('%B %d, %Y at %I:%M %p')
       end
 
       def localize_timestamp(ts)
