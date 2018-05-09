@@ -1,7 +1,6 @@
 module SonosSlackBot::Actors
   class Player
     include Celluloid
-
     include SonosSlackBot::ActorHelpers
 
     attr_reader :speaker, :track

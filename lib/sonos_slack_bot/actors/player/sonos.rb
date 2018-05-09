@@ -16,6 +16,22 @@ module SonosSlackBot::Actors
       end
     end
 
+    def toggle_play
+      speaker = self.class.request_speaker
+      return false unless speaker
+
+      if speaker.is_playing? then speaker.pause
+      else speaker.play
+      end
+    end
+
+    def stop_play
+      speaker = self.class.request_speaker
+      return false unless speaker
+
+      speaker.stop
+    end
+
     private
 
     # This is some really hacky stuff

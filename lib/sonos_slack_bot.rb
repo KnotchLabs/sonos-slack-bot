@@ -37,6 +37,7 @@ require 'sonos_slack_bot/actors/slack_message/base'
 require 'sonos_slack_bot/actors/slack_message/greeting'
 require 'sonos_slack_bot/actors/slack_message/history'
 require 'sonos_slack_bot/actors/slack_message/stats'
+require 'sonos_slack_bot/actors/slack_message/sonos'
 require 'sonos_slack_bot/actors/slack_message/unknown'
 
 #$CELLULOID_DEBUG = true

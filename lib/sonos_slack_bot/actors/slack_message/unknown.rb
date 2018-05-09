@@ -7,6 +7,7 @@ Unknown command: #{message_text.inspect}\n
 #{user_info.profile.display_name} the available commands are:
 - history
 - stats
+- sonos [play|pause|stop]
         MSG
       end
     end
