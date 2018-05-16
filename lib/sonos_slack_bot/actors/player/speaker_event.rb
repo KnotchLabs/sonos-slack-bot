@@ -27,7 +27,7 @@ module SonosSlackBot::Actors
         history = redis_pool_actor.future.track_history(speaker.track).value
 
         return if history.empty?
-        return unless (history.size % 10).zero?
+        return unless history.size == 5 || (history.size % 10).zero?
 
         TrackStatsFormatter.new speaker.track, history, as_event: true
       end
