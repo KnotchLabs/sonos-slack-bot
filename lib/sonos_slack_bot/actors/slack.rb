@@ -3,6 +3,10 @@ module SonosSlackBot::Actors
     include Celluloid
     include Celluloid::Internals::Logger
 
+    CHANNEL_PUBLIC_PREFIX = 'C'.freeze  # public channels start with C
+    CHANNEL_PRIVATE_PREFIX = 'G'.freeze # private channels and group messages start with G
+    CHANNEL_DIRECT_PREFIX = 'D'.freeze      # direct messages start with D
+
     finalizer :disconnect
 
     def initialize
@@ -57,10 +61,11 @@ module SonosSlackBot::Actors
 
         message = { at: false, im: false, user_id: user_id, text: event.text }
 
-        # TODO figure out how to detect an IM
         if message[:text].start_with? client_id_prefix
           message[:at] = true
           message[:text].slice! 0..(client_id_prefix.size - 1)
+        elsif event.channel.start_with? CHANNEL_DIRECT_PREFIX
+          message[:im] = true
         end
 
         Actor[:slack_message_pool].async.process message
