@@ -66,9 +66,14 @@ module SonosSlackBot::Actors
         Actor[:slack_message_pool].async.process message
       end
 
+      @rt_client.on(:closed) do
+        Celluloid.logger.info 'Disconnected real-time slack client'
+
+        start_client
+      end
+
       @rt_client.on(:hello) { Celluloid.logger.info "Connected real-time slack client; client_id=#{client_id}" }
       @rt_client.on(:close) { Celluloid.logger.info 'Disconnecting real-time slack client' }
-      @rt_client.on(:closed) { Celluloid.logger.info 'Disconnected real-time slack client' }
     end
   end
 end
