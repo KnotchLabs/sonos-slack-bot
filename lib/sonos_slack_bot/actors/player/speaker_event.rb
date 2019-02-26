@@ -29,7 +29,7 @@ module SonosSlackBot::Actors
         return if history.empty?
         return unless history.size == 5 || (history.size % 10).zero?
 
-        TrackStatsFormatter.new speaker.track, history, as_event: true
+        slack_actor.async.send_message TrackStatsFormatter.new(speaker.track, history, as_event: true)
       end
     end
   end
